@@ -1,3 +1,3 @@
 # lists-rs
 
-Coding along while reading https://rust-unofficial.github.io/too-many-lists/
+Rust code attempts while learning and reading https://rust-unofficial.github.io/too-many-lists/
