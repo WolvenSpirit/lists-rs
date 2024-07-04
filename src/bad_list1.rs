@@ -1,35 +1,35 @@
-//use std::rc::Rc;
-use std::ops::Deref;
-use std::ops::DerefMut;
 
-struct Node<'a, T> {
-    value: T,
-    next_value: Option<'a Box<Node<'a,T>>>, 
+struct N<'a> {
+    v: Option<&'a i32>,
+    next: Option<&'a N<'a>>,
 }
 
-impl Deref for Node<'_,i32> {
-    type Target<'r> = Node<'r, i32>;
-    fn deref(&self) -> &Self::Target {
-        return self;
+pub fn fiddle() {
+    let i = 3;
+    let z: i32 = 5 ;
+    let q: i32 = 7 ;
+    let no_next= None;
+    let mut foo = N{v: Some(&i),next: no_next};
+    let mut bar = N{v: Some(&z), next: no_next};
+    let  baz = N{v: Some(&q), next: no_next};
+    //bar.next = Some(&foo);
+    bar.next = Some(&baz);
+    foo.next = Some(&bar);
+    
+    let mut curr = Some(&foo);
+    let mut j = 0;
+    while j < 10 {
+        match curr {
+            None => println!("No val"),
+            Some(p) => {
+                match p.v {
+                    None => println!("No val inside"),
+                    Some(g) => println!("{}", g)
+                }
+        }
     }
-}
-
-impl DerefMut for Node<'_,i32> {
-    fn deref_mut(&mut self) -> &mut Self::Target {
-        return self;
+        
+        curr = curr.unwrap().next;
+        j = j+1;
     }
-}
-
-impl AsMut for Node<'_,i32> {
-    fn as_mut(&mut self) -> &mut Node<i32> {
-        todo!()
-    }
-}
-pub fn m() {
-    let mut n2 = Box::new(Node{value:2, next_value: None});
-    let mut n = Box::new(Node{value: 1, next_value: None });
-    let n3 = n2.as_mut(); // = Some(n);
-    //n.next_value = Some(n2);
-    //println!("{}", n.value);
-    // println!("{}", n.next_value.clone().unwrap().value);
 }
